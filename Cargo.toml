@@ -1,0 +1,9 @@
+[package]
+name = "equacoes_diofantinas"
+version = "0.1.0"
+authors = ["Lucas Silveira <lucas.silveira.2010@hotmail.com>"]
+edition = "2018"
+
+[dependencies]
+num = "0.2.0"
+cmp = "0.0.0"
