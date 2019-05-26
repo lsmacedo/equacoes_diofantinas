@@ -1,4 +1,5 @@
 use std::fmt;
+use std::cmp::min;
 
 pub struct Solucao<'a> {
     pub x: i32,
@@ -37,7 +38,7 @@ impl EquacaoDiofantina {
     /*
      * Encontra a solução de uma equação diofantina
      * Para isto, utiliza a seguinte lógica:
-     * Multiplica A por diversos valores de x iniciando em 0 ou -A.
+     * Multiplica A por diversos valores de x iniciando em 0, 1, -|A| ou -|B|.
      * Caso C - Ax seja divisível por B, este será o valor de y.
      * Devolve uma mensagem de erro caso não seja encontrada nenhuma solução.
      */
@@ -45,15 +46,24 @@ impl EquacaoDiofantina {
         let a = self.a;
         let b = self.b;
         let c = self.c;
-        let mut x: i32 = 0;
+        let mut x: i32;
         
+        /* Definindo valor inicial de x */
         if !somente_solucoes_positivas {
-            x = a.abs() * -1;
+            if a > 0 {
+                x = min(-1 * a.abs(), -1 * b.abs());
+            } else {
+                x = 0
+            }
+        } else {
+            x = 1;
         }
         
-        while x * a <= c {
+        /* Iterando por todos os valores possíveis de x e verificando se 
+           algum satisfaz a equação */
+        while x * a <= c.abs() {
             let temp = c - (a * x);
-            if temp % b == 0 {
+            if temp % b == 0 && (temp / b > 0 || !somente_solucoes_positivas) {
                 let y:i32 = temp / b;
                 return Ok(Solucao{x, y, eq: &self});
             }

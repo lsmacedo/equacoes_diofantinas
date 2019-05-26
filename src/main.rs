@@ -1,7 +1,9 @@
 mod equacao_diofantina;
+mod testes;
 
 use std::io::stdin;
 use equacao_diofantina::EquacaoDiofantina;
+use testes::rodar_testes;
 
 fn main() {
     /* Pedindo os valores de A, B e C */
@@ -10,7 +12,7 @@ fn main() {
     let c: i32 = match pedir_valor("C") { Ok(valor) => valor, Err(erro) => { println!("{}", erro); return ; } };
     
     /* Pergunta ao usuário se deseja apenas soluções positivas */
-    let somente_solucoes_positivas = match perguntar_sobre_solucoes_negativas() {
+    let somente_solucoes_positivas = match perguntar_sobre_solucoes_positivas() {
         Ok(valor) => valor, 
         Err(erro) => { println!("{}", erro); return ; }
     };
@@ -45,14 +47,14 @@ fn pedir_valor(nome_variavel: &str) -> Result<i32, &str> {
  * Devolve uma mensagem de erro caso valor digitado seja inválido.
  * Se for válido, devolve booleano indicando se deseja somente soluções positivas.
  */
-fn perguntar_sobre_solucoes_negativas() -> Result<bool, &'static str> {
+fn perguntar_sobre_solucoes_positivas() -> Result<bool, &'static str> {
     let mut x = String::new();
-    println!("Sua solução pode conter valores negativos? (S/N)");
+    println!("Sua solução deve conter somente valores positivos? (S/N)");
     stdin().read_line(&mut x).expect("Erro de IO");
     if x.trim() == "s" || x.trim() == "S" {
-        return Ok(false);
-    } else if x.trim() == "n" || x.trim() == "N" {
         return Ok(true);
+    } else if x.trim() == "n" || x.trim() == "N" {
+        return Ok(false);
     }
     Err("Por favor, responda esta pergunta com S ou N.")
 }
